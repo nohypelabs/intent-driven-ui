@@ -2,9 +2,9 @@
 
 export function LoadingSkeleton() {
   return (
-    <div className="w-full max-w-md space-y-4 animate-pulse">
+    <div className="w-full max-w-md p-5 bg-slate-900/80 border border-slate-800/60 rounded-2xl shadow-xl space-y-4 animate-pulse backdrop-blur-sm">
       {/* Header skeleton */}
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-800/60">
         <div className="h-3 w-24 bg-slate-800 rounded" />
         <div className="h-8 w-8 bg-slate-800 rounded-lg" />
       </div>
@@ -22,7 +22,7 @@ export function LoadingSkeleton() {
       </div>
 
       {/* Action skeleton */}
-      <div className="pt-3 border-t border-slate-800">
+      <div className="pt-3 border-t border-slate-800/60">
         <div className="h-10 w-full bg-slate-800 rounded-xl" />
       </div>
     </div>

@@ -5,16 +5,27 @@ import { trpc } from './_trpc/client';
 import { WidgetRenderer } from './_components/widget-renderer';
 import { PromptInput } from './_components/prompt-input';
 import { LoadingSkeleton } from './_components/loading-skeleton';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, X } from 'lucide-react';
 import { UIWidget } from '@/shared/schemas/widget-schema';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface WidgetEntry {
+  id: string;
+  widget: UIWidget;
+}
+
+let widgetIdCounter = 0;
+
 export default function DashboardPage() {
-  const [activeWidgets, setActiveWidgets] = useState<UIWidget[]>([]);
+  const [activeWidgets, setActiveWidgets] = useState<WidgetEntry[]>([]);
 
   const processIntent = trpc.intent.process.useMutation({
     onSuccess: (data) => {
-      setActiveWidgets((prev) => [data.widget, ...prev]);
+      const entry: WidgetEntry = {
+        id: `widget-${++widgetIdCounter}-${Date.now()}`,
+        widget: data.widget,
+      };
+      setActiveWidgets((prev) => [entry, ...prev]);
     },
   });
 
@@ -24,6 +35,10 @@ export default function DashboardPage() {
 
   const handleSuggestionClick = (suggestion: string) => {
     processIntent.mutate({ prompt: suggestion });
+  };
+
+  const handleDismiss = (id: string) => {
+    setActiveWidgets((prev) => prev.filter((w) => w.id !== id));
   };
 
   return (
@@ -45,6 +60,20 @@ export default function DashboardPage() {
           </p>
         </motion.div>
       </header>
+
+      {/* Error State */}
+      <AnimatePresence>
+        {processIntent.isError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            className="w-full max-w-md mb-6 p-4 bg-rose-500/10 border border-rose-500/30 rounded-xl text-sm text-rose-400 text-center"
+          >
+            Failed to process instruction. Please try again.
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Widget Display Area */}
       <section className="w-full flex-1 py-8">
@@ -87,19 +116,26 @@ export default function DashboardPage() {
             </motion.div>
           )}
 
-          {activeWidgets.map((widget, idx) => (
+          {activeWidgets.map((entry, idx) => (
             <motion.div
-              key={`${widget.type}-${idx}-${JSON.stringify(widget).slice(0, 50)}`}
+              key={entry.id}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -20, scale: 0.95 }}
               transition={{ duration: 0.3, delay: idx * 0.05 }}
-              className="flex justify-center mb-6"
+              className="flex justify-center mb-6 relative group"
             >
               <WidgetRenderer
-                widget={widget}
+                widget={entry.widget}
                 onSuggestionClick={handleSuggestionClick}
               />
+              <button
+                onClick={() => handleDismiss(entry.id)}
+                aria-label="Dismiss widget"
+                className="absolute -top-2 -right-2 w-6 h-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+              >
+                <X className="w-3 h-3 text-slate-400" />
+              </button>
             </motion.div>
           ))}
 

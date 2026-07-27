@@ -1,25 +1,38 @@
 'use client';
 
-import { TrendingUp, TrendingDown, Minus, Activity } from 'lucide-react';
+import { TrendingUp, TrendingDown, Minus, Activity, DollarSign, Users, Zap, BarChart3, Cpu, Globe } from 'lucide-react';
 import { AnalyticsWidgetSchema } from '@/shared/schemas/widget-schema';
 import { z } from 'zod';
 
 type AnalyticsCardProps = z.infer<typeof AnalyticsWidgetSchema>;
+
+const iconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  DollarSign,
+  Users,
+  Zap,
+  BarChart3,
+  Cpu,
+  Globe,
+  Activity,
+};
 
 export function AnalyticsCardWidget({
   title,
   metric,
   trend,
   description,
+  icon,
 }: AnalyticsCardProps) {
+  const IconComponent = iconMap[icon || 'Activity'] || Activity;
+
   return (
-    <div className="w-full max-w-md p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl hover:border-slate-700 transition-all duration-200">
-      <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
+    <div className="w-full max-w-md p-5 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl hover:border-slate-700/80 transition-all duration-200">
+      <div className="flex items-center justify-between pb-3 border-b border-slate-800/60">
         <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">
           {title}
         </span>
         <div className="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg">
-          <Activity className="w-4 h-4" />
+          <IconComponent className="w-4 h-4" />
         </div>
       </div>
 

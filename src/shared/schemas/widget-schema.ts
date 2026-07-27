@@ -13,82 +13,81 @@ export const WidgetTypeEnum = z.enum([
 
 export const AnalyticsWidgetSchema = z.object({
   type: z.literal('ANALYTICS_CARD'),
-  title: z.string().describe('Judul ringkas metrik, maksimal 5 kata'),
-  metric: z.string().describe('Nilai utama metrik, contoh: "+34.2%", "1,250 USDT"'),
-  trend: z.enum(['up', 'down', 'neutral']).describe('Arah tren metrik'),
-  description: z.string().describe('Penjelasan konteks singkat metrik'),
-  icon: z.string().optional().describe('Nama ikon Lucide, contoh: "DollarSign", "Users"'),
+  title: z.string().describe('Brief metric title, max 5 words'),
+  metric: z.string().describe('Main metric value, e.g.: "+34.2%", "1,250 USDT"'),
+  trend: z.enum(['up', 'down', 'neutral']).describe('Metric trend direction'),
+  description: z.string().describe('Brief contextual explanation of the metric'),
+  icon: z.string().optional().describe('Lucide icon name, e.g.: "DollarSign", "Users"'),
 });
 
 export const ActionConfirmationWidgetSchema = z.object({
   type: z.literal('ACTION_CONFIRMATION'),
-  actionName: z.string().describe('Nama aksi utama yang perlu dikonfirmasi'),
-  payloadSummary: z.string().describe('Ringkasan rincian parameter aksi'),
-  confirmText: z.string().describe('Label tombol konfirmasi'),
-  actionId: z.string().describe('ID unik aksi, format: act_xxx'),
-  severity: z.enum(['low', 'medium', 'high']).optional().describe('Tingkat kepentingan aksi'),
+  actionName: z.string().describe('Main action name that needs confirmation'),
+  payloadSummary: z.string().describe('Summary of action parameters'),
+  confirmText: z.string().describe('Confirmation button label'),
+  actionId: z.string().describe('Unique action ID, format: act_xxx'),
+  severity: z.enum(['low', 'medium', 'high']).optional().describe('Action importance level'),
 });
 
 export const DataTableWidgetSchema = z.object({
   type: z.literal('DATA_TABLE'),
-  title: z.string().describe('Judul tabel data'),
-  headers: z.array(z.string()).describe('Daftar nama kolom tabel'),
-  rows: z.array(z.array(z.string())).describe('Array 2D berisi isi baris data'),
-  footer: z.string().optional().describe('Catatan kaki tabel'),
+  title: z.string().describe('Data table title'),
+  headers: z.array(z.string()).describe('List of column names'),
+  rows: z.array(z.array(z.string())).describe('2D array of row data'),
+  footer: z.string().optional().describe('Table footer note'),
 });
 
 export const ListCardWidgetSchema = z.object({
   type: z.literal('LIST_CARD'),
-  title: z.string().describe('Judul daftar'),
+  title: z.string().describe('List title'),
   items: z.array(z.object({
-    label: z.string().describe('Nama item'),
-    value: z.string().describe('Nilai/deskripsi item'),
-    status: z.enum(['active', 'inactive', 'pending', 'completed', 'error']).optional().describe('Status item'),
-    badge: z.string().optional().describe('Badge label, contoh: "NEW", "URGENT"'),
-  })).describe('Daftar item'),
-  maxVisible: z.number().optional().describe('Jumlah item maksimal yang ditampilkan'),
+    label: z.string().describe('Item name'),
+    value: z.string().describe('Item value/description'),
+    status: z.enum(['active', 'inactive', 'pending', 'completed', 'error']).optional().describe('Item status'),
+    badge: z.string().optional().describe('Badge label, e.g.: "NEW", "URGENT"'),
+  })).describe('List of items'),
+  maxVisible: z.number().optional().describe('Maximum number of items to display'),
 });
 
 export const ChartWidgetSchema = z.object({
   type: z.literal('CHART_WIDGET'),
-  title: z.string().describe('Judul chart'),
-  chartType: z.enum(['bar', 'line', 'area']).describe('Jenis chart'),
-  labels: z.array(z.string()).describe('Label sumbu X'),
+  title: z.string().describe('Chart title'),
+  chartType: z.enum(['bar', 'line', 'area']).describe('Chart type'),
+  labels: z.array(z.string()).describe('X-axis labels'),
   datasets: z.array(z.object({
-    label: z.string().describe('Nama dataset'),
-    data: z.array(z.number()).describe('Nilai data'),
-    color: z.string().optional().describe('Warna dataset, contoh: "#6366f1"'),
-  })).describe('Dataset chart'),
-  unit: z.string().optional().describe('Satuan nilai, contoh: "USD", "%"'),
+    label: z.string().describe('Dataset name'),
+    data: z.array(z.number()).describe('Data values'),
+    color: z.string().optional().describe('Dataset color, e.g.: "#6366f1"'),
+  })).describe('Chart datasets'),
+  unit: z.string().optional().describe('Value unit, e.g.: "USD", "%"'),
 });
 
 export const CalendarWidgetSchema = z.object({
   type: z.literal('CALENDAR_WIDGET'),
-  title: z.string().describe('Judul kalender/jadwal'),
+  title: z.string().describe('Calendar/schedule title'),
   events: z.array(z.object({
-    date: z.string().describe('Tanggal event, format: YYYY-MM-DD'),
-    title: z.string().describe('Judul event'),
-    time: z.string().optional().describe('Waktu event, contoh: "14:00 - 15:30"'),
-    type: z.enum(['meeting', 'deadline', 'reminder', 'task']).optional().describe('Tipe event'),
-  })).describe('Daftar event'),
-  currentMonth: z.string().describe('Bulan saat ini, contoh: "2026-07"'),
+    date: z.string().describe('Event date, format: YYYY-MM-DD'),
+    title: z.string().describe('Event title'),
+    time: z.string().optional().describe('Event time, e.g.: "14:00 - 15:30"'),
+    type: z.enum(['meeting', 'deadline', 'reminder', 'task']).optional().describe('Event type'),
+  })).describe('List of events'),
+  currentMonth: z.string().describe('Current month, e.g.: "2026-07"'),
 });
 
 export const StepFlowWidgetSchema = z.object({
   type: z.literal('STEP_FLOW_WIDGET'),
-  title: z.string().describe('Judul alur proses'),
+  title: z.string().describe('Process flow title'),
   steps: z.array(z.object({
-    label: z.string().describe('Nama langkah'),
-    description: z.string().optional().describe('Deskripsi langkah'),
-    status: z.enum(['completed', 'current', 'pending', 'error']).describe('Status langkah'),
-  })).describe('Daftar langkah'),
-  currentStep: z.number().describe('Index langkah aktif (0-based)'),
+    label: z.string().describe('Step name'),
+    description: z.string().optional().describe('Step description'),
+    status: z.enum(['completed', 'current', 'pending', 'error']).describe('Step status'),
+  })).describe('List of steps'),
 });
 
 export const EmptyStateWidgetSchema = z.object({
   type: z.literal('EMPTY_STATE'),
-  message: z.string().describe('Pesan ramah bahwa instruksi tidak memerlukan UI khusus'),
-  suggestions: z.array(z.string()).optional().describe('Saran perintah yang bisa dicoba'),
+  message: z.string().describe('Friendly message when instruction does not require a specific UI'),
+  suggestions: z.array(z.string()).optional().describe('Suggested commands to try'),
 });
 
 export const UIWidgetSchema = z.discriminatedUnion('type', [

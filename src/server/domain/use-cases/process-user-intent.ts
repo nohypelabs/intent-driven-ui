@@ -12,7 +12,7 @@ export class ProcessUserIntentUseCase {
     const widget = await this.llmProvider.parseIntentToWidget(prompt);
 
     return {
-      message: 'Intent berhasil diproses.',
+      message: 'Intent processed successfully.',
       widget,
     };
   }

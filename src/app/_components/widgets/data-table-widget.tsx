@@ -8,8 +8,8 @@ type DataTableProps = z.infer<typeof DataTableWidgetSchema>;
 
 export function DataTableWidget({ title, headers, rows, footer }: DataTableProps) {
   return (
-    <div className="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-slate-800 flex items-center gap-2 bg-slate-900/50">
+    <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-800/60 flex items-center gap-2 bg-slate-900/50">
         <TableIcon className="w-4 h-4 text-slate-400" />
         <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
       </div>
@@ -25,14 +25,16 @@ export function DataTableWidget({ title, headers, rows, footer }: DataTableProps
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-800/60">
+          <tbody className="divide-y divide-slate-800/40">
             {rows.map((row, rowIdx) => (
               <tr
                 key={rowIdx}
-                className="hover:bg-slate-800/40 transition-colors duration-150"
+                className={`hover:bg-slate-800/40 transition-colors duration-150 ${
+                  rowIdx % 2 === 1 ? 'bg-slate-900/30' : ''
+                }`}
               >
                 {row.map((cell, cellIdx) => (
-                  <td key={cellIdx} className="px-5 py-3.5 whitespace-nowrap">
+                  <td key={cellIdx} className="px-5 py-3 whitespace-nowrap">
                     {cell}
                   </td>
                 ))}
@@ -43,8 +45,8 @@ export function DataTableWidget({ title, headers, rows, footer }: DataTableProps
       </div>
 
       {footer && (
-        <div className="px-5 py-3 border-t border-slate-800 bg-slate-900/50">
-          <p className="text-[10px] text-slate-500 italic">{footer}</p>
+        <div className="px-5 py-3 border-t border-slate-800/60 bg-slate-900/50 text-center">
+          <p className="text-xs text-slate-500 italic">{footer}</p>
         </div>
       )}
     </div>

@@ -184,7 +184,6 @@ export const MOCK_STEP_FLOWS: UIWidget[] = [
       { label: 'QA Review', description: 'Quality assurance check', status: 'pending' },
       { label: 'Production Deploy', description: 'Deploy to production', status: 'pending' },
     ],
-    currentStep: 2,
   },
   {
     type: 'STEP_FLOW_WIDGET',
@@ -195,7 +194,6 @@ export const MOCK_STEP_FLOWS: UIWidget[] = [
       { label: 'Complete Profile', description: 'Upload photo & info', status: 'current' },
       { label: 'Choose Plan', description: 'Select subscription plan', status: 'pending' },
     ],
-    currentStep: 2,
   },
 ];
 

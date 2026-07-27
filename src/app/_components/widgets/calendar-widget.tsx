@@ -7,10 +7,10 @@ import { z } from 'zod';
 type CalendarWidgetProps = z.infer<typeof CalendarWidgetSchema>;
 
 const eventTypeStyles = {
-  meeting: 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30',
-  deadline: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-  reminder: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-  task: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+  meeting: 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30',
+  deadline: 'bg-rose-500/20 text-rose-400 border border-rose-500/30',
+  reminder: 'bg-amber-500/20 text-amber-400 border border-amber-500/30',
+  task: 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30',
 };
 
 export function CalendarWidget({ title, events, currentMonth }: CalendarWidgetProps) {
@@ -26,21 +26,21 @@ export function CalendarWidget({ title, events, currentMonth }: CalendarWidgetPr
     return events.filter((e) => e.date === dateStr);
   };
 
-  const monthName = new Date(year, month - 1).toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+  const monthName = new Date(year, month - 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
 
   return (
-    <div className="w-full max-w-lg bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
-      <div className="px-5 py-4 border-b border-slate-800 flex items-center gap-2 bg-slate-900/50">
+    <div className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-xl overflow-hidden">
+      <div className="px-5 py-4 border-b border-slate-800/60 flex items-center gap-2 bg-slate-900/50">
         <Calendar className="w-4 h-4 text-slate-400" />
         <h3 className="text-sm font-semibold text-slate-200">{title}</h3>
-        <span className="ml-auto text-[10px] text-slate-500">{monthName}</span>
+        <span className="ml-auto text-xs text-slate-500">{monthName}</span>
       </div>
 
       <div className="p-5">
         {/* Day Headers */}
         <div className="grid grid-cols-7 gap-1 mb-2">
-          {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map((d) => (
-            <div key={d} className="text-center text-[10px] font-medium text-slate-500 py-1">
+          {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((d) => (
+            <div key={d} className="text-center text-xs font-medium text-slate-500 py-1">
               {d}
             </div>
           ))}
@@ -59,7 +59,7 @@ export function CalendarWidget({ title, events, currentMonth }: CalendarWidgetPr
             return (
               <div
                 key={day}
-                className={`h-8 flex items-center justify-center rounded-lg text-[11px] relative ${
+                className={`h-8 flex items-center justify-center rounded-lg text-xs relative ${
                   isToday
                     ? 'bg-indigo-600 text-white font-bold'
                     : hasEvent
@@ -78,15 +78,15 @@ export function CalendarWidget({ title, events, currentMonth }: CalendarWidgetPr
 
         {/* Events List */}
         {events.length > 0 && (
-          <div className="mt-4 pt-3 border-t border-slate-800 space-y-2">
-            <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-500">Upcoming</span>
+          <div className="mt-4 pt-3 border-t border-slate-800/60 space-y-2">
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">Upcoming</span>
             {events.slice(0, 4).map((event, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <div className={`px-1.5 py-0.5 rounded text-[9px] font-medium border ${eventTypeStyles[event.type ?? 'task']}`}>
+                <div className={`px-1.5 py-0.5 rounded text-xs font-medium ${eventTypeStyles[event.type ?? 'task']}`}>
                   {event.type ?? 'task'}
                 </div>
-                <span className="text-[11px] text-slate-300 flex-1">{event.title}</span>
-                {event.time && <span className="text-[10px] text-slate-500">{event.time}</span>}
+                <span className="text-xs text-slate-300 flex-1">{event.title}</span>
+                {event.time && <span className="text-xs text-slate-500">{event.time}</span>}
               </div>
             ))}
           </div>
